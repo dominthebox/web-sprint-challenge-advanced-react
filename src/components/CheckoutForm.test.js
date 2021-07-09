@@ -2,6 +2,7 @@ import React from "react";
 import { render, screen, waitFor } from "@testing-library/react";
 import CheckoutForm from "./CheckoutForm";
 import userEvent from "@testing-library/user-event";
+import MutationObserver from 'mutationobserver-shim';
 
 // Write up the two tests here and make sure they are testing what the title shows
 
@@ -38,20 +39,14 @@ test("form shows success message on submit with form details", async () => {
 
   // Assert
   await waitFor(() => {
-    const firstNameDisplay = screen.queryByText("dom");
-    const lastNameDisplay = screen.queryByText("sallustro");
+    const nameDisplay = screen.getByText("dom sallustro");
     const addressDisplay = screen.queryByText("1234 fake st");
-    const cityDisplay = screen.queryByText("paradise city");
-    const stateDisplay = screen.queryByText("NJ");
-    const zipDisplay = screen.queryByText("12494");
+    const cityStateZipDisplay = screen.getByText("paradise city, NJ 12494");
     const messageDisplay = screen.queryByTestId(/successMessage/i);
 
-    expect(firstNameDisplay).toBeInTheDocument();
-    expect(lastNameDisplay).toBeInTheDocument();
+    expect(nameDisplay).toBeInTheDocument();
     expect(addressDisplay).toBeInTheDocument();
-    expect(cityDisplay).toBeInTheDocument();
-    expect(stateDisplay).toBeInTheDocument();
-    expect(zipDisplay).toBeInTheDocument();
+    expect(cityStateZipDisplay).toBeInTheDocument();
     expect(messageDisplay).toBeInTheDocument();
   })
 });
