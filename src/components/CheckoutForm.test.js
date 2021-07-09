@@ -1,5 +1,5 @@
 import React from "react";
-import { render, screen } from "@testing-library/react";
+import { render, screen, waitFor } from "@testing-library/react";
 import CheckoutForm from "./CheckoutForm";
 import userEvent from "@testing-library/user-event";
 
@@ -37,20 +37,21 @@ test("form shows success message on submit with form details", async () => {
   userEvent.click(submitButton);
 
   // Assert
+  await waitFor(() => {
+    const firstNameDisplay = screen.queryByText("dom");
+    const lastNameDisplay = screen.queryByText("sallustro");
+    const addressDisplay = screen.queryByText("1234 fake st");
+    const cityDisplay = screen.queryByText("paradise city");
+    const stateDisplay = screen.queryByText("NJ");
+    const zipDisplay = screen.queryByText("12494");
+    const messageDisplay = screen.queryByTestId(/successMessage/i);
 
-  const firstNameDisplay = screen.queryByText("dom");
-  const lastNameDisplay = screen.queryByText("sallustro");
-  const addressDisplay = screen.queryByText("1234 fake st");
-  const cityDisplay = screen.queryByText("paradise city");
-  const stateDisplay = screen.queryByText("NJ");
-  const zipDisplay = screen.queryByText("12494");
-  const messageDisplay = screen.queryByTestId(/successMessage/i);
-
-  expect(firstNameDisplay).toBeInTheDocument();
-  expect(lastNameDisplay).toBeInTheDocument();
-  expect(addressDisplay).toBeInTheDocument();
-  expect(cityDisplay).toBeInTheDocument();
-  expect(stateDisplay).toBeInTheDocument();
-  expect(zipDisplay).toBeInTheDocument();
-  expect(messageDisplay).toBeInTheDocument();
+    expect(firstNameDisplay).toBeInTheDocument();
+    expect(lastNameDisplay).toBeInTheDocument();
+    expect(addressDisplay).toBeInTheDocument();
+    expect(cityDisplay).toBeInTheDocument();
+    expect(stateDisplay).toBeInTheDocument();
+    expect(zipDisplay).toBeInTheDocument();
+    expect(messageDisplay).toBeInTheDocument();
+  })
 });
